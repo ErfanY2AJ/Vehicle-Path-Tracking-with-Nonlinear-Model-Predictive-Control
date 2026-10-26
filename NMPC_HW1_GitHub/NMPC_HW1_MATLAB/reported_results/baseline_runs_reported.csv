@@ -1,4 +1,0 @@
-Case,positionRMSE_full_m,speedRMSE_full_mps,positionRMSE_after5_m,speedRMSE_after5_mps,meanSolve_full_s,maxSolve_full_s,converged,feasibleNotConverged,fallback
-nominal_mild,0.0606,0.0431,0.0017,0.0012,0.0264,0.104,994,6,0
-nominal_challenging,0.0606,0.0431,0.0022,0.0012,0.0274,0.1183,998,2,0
-mass_plus10pct,0.0613,0.0447,0.0057,0.0009201,0.0214,0.0909,899,101,0
