@@ -1,0 +1,5 @@
+Case,BaselineScore,CandidateScore,BaselinePositionRMSE_after5_m,CandidatePositionRMSE_after5_m,BaselineSpeedRMSE_after5_mps,CandidateSpeedRMSE_after5_mps,BaselineMeanSolve_full_s,CandidateMeanSolve_full_s
+nominal_mild,0.74834,0.57821,0.0017009,0.00036624,0.0012014,4.1148e-05,0.018143,0.0093212
+nominal_challenging,0.83494,0.63552,0.0022254,0.0012166,0.0012044,8.6063e-05,0.019167,0.0094842
+mass_plus10pct,1.939,1.0909,0.0057097,0.0034944,0.0009201,1.2421e-05,0.020473,0.0098817
+intermediate_path_mass_plus5pct,1.0252,0.72967,0.0031298,0.0018875,0.0010643,3.5954e-05,0.020407,0.010074
