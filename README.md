@@ -122,7 +122,7 @@ T_h=N_p\Delta t=2\ {\rm s},\qquad
 K=\frac{100}{0.1}=1000.
 ```
 
-**MATLAB — [nmpc_config.m](nmpc_config.m)**
+**MATLAB — [nmpc_config.m](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/nmpc_config.m)**
 
 ```matlab
 cfg.dt = 0.1;
@@ -158,7 +158,7 @@ F_{\rm resistance}=C_Av^2+mgf_r,
 T_{\rm eq}(v)=\frac{R}{\eta}(C_Av^2+mgf_r).
 ```
 
-**MATLAB — [equilibrium_torque.m](equilibrium_torque.m)**
+**MATLAB — [equilibrium_torque.m](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/equilibrium_torque.m)**
 
 ```matlab
 function T = equilibrium_torque(v,p)
@@ -182,7 +182,7 @@ x_0=\begin{bmatrix}0.4&0&14.5&0&T_{\rm eq}(14.5)\end{bmatrix}^{\mathsf T},
 u_{-1}=\begin{bmatrix}T_{\rm eq}(14.5)&0\end{bmatrix}^{\mathsf T}.
 ```
 
-**MATLAB — initialization in [simulate_nmpc.m](simulate_nmpc.m)**
+**MATLAB — initialization in [simulate_nmpc.m](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/simulate_nmpc.m)**
 
 ```matlab
 T0 = equilibrium_torque(14.5,cfg.p);
@@ -212,7 +212,7 @@ p_{x,k+1}=p_{x,k}+\Delta t\,v_k\cos\varphi_k,\qquad
 p_{y,k+1}=p_{y,k}+\Delta t\,v_k\sin\varphi_k.
 ```
 
-**MATLAB — position rows of [vehicle_step.m](vehicle_step.m)**
+**MATLAB — position rows of [vehicle_step.m](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/vehicle_step.m)**
 
 ```matlab
 pxNext = x(1) + dt*v*cos(phi);
@@ -256,7 +256,7 @@ v_{k+1}
 \end{aligned}
 ```
 
-**MATLAB — speed row of [vehicle_step.m](vehicle_step.m)**
+**MATLAB — speed row of [vehicle_step.m](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/vehicle_step.m)**
 
 ```matlab
 F = p.CA*v^2 + p.m*p.g*p.fr;
@@ -361,7 +361,7 @@ T_k+\frac{\Delta t}{\tau}(T_{u,k}-T_k)
 \end{bmatrix}.
 ```
 
-**MATLAB — complete [vehicle_step.m](vehicle_step.m), including the Jacobians derived in Steps 14–15**
+**MATLAB — complete [vehicle_step.m](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/vehicle_step.m), including the Jacobians derived in Steps 14–15**
 
 ```matlab
 function [xn,A,B] = vehicle_step(x,u,p,dt)
@@ -432,13 +432,13 @@ This is a hand-check with a selected equilibrium command, not a newly measured c
 
 The demo holds equilibrium torque at 14 m/s and applies a 0.05-rad steering pulse from 3 to 5 seconds.
 
-**MATLAB — [demo_open_loop.m](demo_open_loop.m)**
+**MATLAB — [demo_open_loop.m](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/demo_open_loop.m)**
 
 ```matlab
 demo_open_loop
 ```
 
-![Open-loop model check with a steering pulse](assets/open_loop.png)
+![Open-loop model check with a steering pulse](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/assets/open_loop.png)
 
 <a id="step-08"></a>
 ## Step 8 — Define the practice reference yaw rate
@@ -455,7 +455,7 @@ r_b(t)=
 \end{cases}
 ```
 
-**MATLAB — [practice_yaw_rate.m](practice_yaw_rate.m)**
+**MATLAB — [practice_yaw_rate.m](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/practice_yaw_rate.m)**
 
 ```matlab
 function r = practice_yaw_rate(t)
@@ -478,7 +478,7 @@ r^{\rm ref}(t)=\alpha r_b(t),\qquad
 \alpha=1\ \text{(challenging)}.
 ```
 
-**MATLAB — amplitude scaling in [make_reference.m](make_reference.m)**
+**MATLAB — amplitude scaling in [make_reference.m](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/make_reference.m)**
 
 ```matlab
 yawRate = cfg.alpha*cfg.yawRateFcn(t);
@@ -553,7 +553,7 @@ cfg.referenceCSV = 'reference.csv';
 ref = make_reference(cfg);
 ```
 
-Complete implementation: [make_reference.m](make_reference.m).
+Complete implementation: [make_reference.m](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/make_reference.m).
 
 <a id="step-10"></a>
 ## Step 10 — Normalize the commands and express the bounds
@@ -587,7 +587,7 @@ Z=\begin{bmatrix}z_0&z_1&\cdots&z_{N-1}\end{bmatrix},
 z=\mathrm{vec}(Z)\in\mathbb R^{2N},\qquad N=N_p.
 ```
 
-**MATLAB — [nmpc_objective.m](nmpc_objective.m)**
+**MATLAB — [nmpc_objective.m](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/nmpc_objective.m)**
 
 ```matlab
 N = cfg.Np;
@@ -650,7 +650,7 @@ T_{\rm eq}(v_{j+1}^{\rm ref})/1965.1\\
 \qquad j=0,\ldots,N-1.
 ```
 
-**MATLAB — [simulate_nmpc.m](simulate_nmpc.m)**
+**MATLAB — [simulate_nmpc.m](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/simulate_nmpc.m)**
 
 ```matlab
 Zref = [equilibrium_torque(Yref(3,2:end),cfg.p)/cfg.inputScale(1); zeros(1,N)];
@@ -917,7 +917,7 @@ B_j^u=
 \end{bmatrix}.
 ```
 
-**MATLAB — [vehicle_step.m](vehicle_step.m)**
+**MATLAB — [vehicle_step.m](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/vehicle_step.m)**
 
 ```matlab
 B = zeros(5,2);
@@ -933,7 +933,7 @@ B_j^z=\frac{\partial f_d}{\partial z_j}
 =B_j^uD_u.
 ```
 
-**MATLAB — [nmpc_objective.m](nmpc_objective.m)**
+**MATLAB — [nmpc_objective.m](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/nmpc_objective.m)**
 
 ```matlab
 BB(:,:,j) = Bphysical*diag(cfg.inputScale);
@@ -1067,7 +1067,7 @@ At loop column `j`, `lambda` is the derivative at `X(:,j+1)`. There is no need t
 =\nabla_{z_j}(J_R+J_S)+(B_j^z)^{\mathsf T}\lambda_{j+1}.
 ```
 
-**MATLAB — complete [nmpc_objective.m](nmpc_objective.m)**
+**MATLAB — complete [nmpc_objective.m](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/nmpc_objective.m)**
 
 ```matlab
 function [J,g,X] = nmpc_objective(z,x0,zprev,Yref,Zref,cfg)
@@ -1130,7 +1130,7 @@ g_i^{\rm FD}
 
 Here `epsilon_i` is a unit coordinate vector; it is unrelated to the tracking error `e_j`.
 
-**MATLAB — excerpt from [run_self_tests.m](run_self_tests.m)**
+**MATLAB — excerpt from [run_self_tests.m](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/run_self_tests.m)**
 
 ```matlab
 [~,g]=fun(z); gn=zeros(size(z)); h=1e-6;
@@ -1158,7 +1158,7 @@ B_{:,i}^{\rm FD}
 run_self_tests
 ```
 
-An independent NumPy implementation produced relative errors of approximately `5.34e-11` for the state Jacobian, `1.23e-9` for the input Jacobian, and `1.01e-8` for the objective gradient at `Np=20, dt=0.1`. These are independent numerical checks, not native MATLAB execution. See [TESTING.md](TESTING.md) for the complete verification scope.
+An independent NumPy implementation produced relative errors of approximately `5.34e-11` for the state Jacobian, `1.23e-9` for the input Jacobian, and `1.01e-8` for the objective gradient at `Np=20, dt=0.1`. These are independent numerical checks, not native MATLAB execution. See [TESTING.md](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/TESTING.md) for the complete verification scope.
 
 <a id="step-19"></a>
 ## Step 19 — Define projection and constrained stationarity
@@ -1169,7 +1169,7 @@ The componentwise projection onto the input box is:
 [\Pi_{[\ell,u]}(q)]_i=\min(\max(q_i,\ell_i),u_i).
 ```
 
-**MATLAB — feasible initialization in [box_bfgs.m](box_bfgs.m)**
+**MATLAB — feasible initialization in [box_bfgs.m](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/box_bfgs.m)**
 
 ```matlab
 z = min(max(z0(:),lb),ub);
@@ -1400,7 +1400,7 @@ info.costStagnated = abs(oldJ-J)<=opt.functionTol*max(1,abs(oldJ));
 | -1 | Projected line search stalled |
 | -2 | Nonfinite objective or gradient |
 
-A successful first-order termination does not prove a global optimum for the nonlinear NMPC problem. Complete implementation: [box_bfgs.m](box_bfgs.m).
+A successful first-order termination does not prove a global optimum for the nonlinear NMPC problem. Complete implementation: [box_bfgs.m](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/box_bfgs.m).
 
 <a id="step-24"></a>
 ## Step 24 — Warm-start the next optimization
@@ -1460,7 +1460,7 @@ Z^{\rm candidate},&\text{otherwise}.
 \end{cases}
 ```
 
-**MATLAB — complete [choose_command.m](choose_command.m)**
+**MATLAB — complete [choose_command.m](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/choose_command.m)**
 
 ```matlab
 function [Z,status] = choose_command(candidate,Jcandidate,exitflag,warm,Jwarm,cfg)
@@ -1528,7 +1528,7 @@ if any(~isfinite(X(:,k+1))) || X(3,k+1)<=0
 end
 ```
 
-Complete integration and logging: [simulate_nmpc.m](simulate_nmpc.m). The optional `fmincon` path uses SQP and the same analytical objective gradient; it requires Optimization Toolbox. The default projected solver needs no additional toolbox.
+Complete integration and logging: [simulate_nmpc.m](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/simulate_nmpc.m). The optional `fmincon` path uses SQP and the same analytical objective gradient; it requires Optimization Toolbox. The default projected solver needs no additional toolbox.
 
 <a id="step-27"></a>
 ## Step 27 — Compute the performance metrics precisely
@@ -1545,7 +1545,7 @@ At each stored state:
 \epsilon_{v,k}=v_k-v_k^{\rm ref}.
 ```
 
-**MATLAB — [compute_metrics.m](compute_metrics.m)**
+**MATLAB — [compute_metrics.m](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/compute_metrics.m)**
 
 ```matlab
 e = result.X(1:3,:)-result.ref.Y(:,1:K+1);
@@ -1693,11 +1693,11 @@ r.metrics.full
 r.metrics.after5s
 ```
 
-![Tracking during the short practice run](assets/quick_tracking.png)
+![Tracking during the short practice run](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/assets/quick_tracking.png)
 
-![Baseline commands and command bounds](assets/baseline_inputs.png)
+![Baseline commands and command bounds](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/assets/baseline_inputs.png)
 
-![Baseline solver diagnostics](assets/baseline_solver.png)
+![Baseline solver diagnostics](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/assets/baseline_solver.png)
 
 ### 28.2 Explain the mass mismatch
 
@@ -1708,7 +1708,7 @@ m_{\rm prediction}=1270\ {\rm kg},\qquad
 m_{\rm actual}=1.1(1270)=1397\ {\rm kg}.
 ```
 
-**MATLAB — plant parameter in [simulate_nmpc.m](simulate_nmpc.m)**
+**MATLAB — plant parameter in [simulate_nmpc.m](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/simulate_nmpc.m)**
 
 ```matlab
 actual = cfg.p;
@@ -1733,9 +1733,9 @@ deltaTorque = equilibrium_torque(15,actual)-equilibrium_torque(15,cfg.p);
 
 The persistent position error of approximately 5.7 mm in the baseline mass experiment is consistent with model mismatch and the trade-off between tracking and command penalties. This controller has no integral state or disturbance estimator, so zero offset under mismatch is not guaranteed.
 
-![Tracking with actual mass increased by 10 percent](assets/mass_tracking.png)
+![Tracking with actual mass increased by 10 percent](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/assets/mass_tracking.png)
 
-![Solver diagnostics for the mass uncertainty experiment](assets/mass_solver.png)
+![Solver diagnostics for the mass uncertainty experiment](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/assets/mass_solver.png)
 
 ### 28.3 Inspect small-step terminations
 
@@ -1824,7 +1824,7 @@ Each continuous coordinate maps logarithmically to a positive multiplier:
 \gamma_i=\tfrac14,1,4.
 ```
 
-**MATLAB — search limits in [nmpc_tuning_options.m](nmpc_tuning_options.m)**
+**MATLAB — search limits in [nmpc_tuning_options.m](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/nmpc_tuning_options.m)**
 
 ```matlab
 opt.NpValues=[10 15 20 25 30];
@@ -1844,7 +1844,7 @@ S(\theta)&=\mathrm{diag}(0.3\gamma_{S_T},3\gamma_{S_\delta}).
 \end{aligned}
 ```
 
-**MATLAB — complete [nmpc_tuning_decode.m](nmpc_tuning_decode.m)**
+**MATLAB — complete [nmpc_tuning_decode.m](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/nmpc_tuning_decode.m)**
 
 ```matlab
 function cfg = nmpc_tuning_decode(theta,base,opt)
@@ -1885,7 +1885,7 @@ F(\theta)=+\infty
 \end{gathered}
 ```
 
-**MATLAB — validation in [nmpc_tuning_score.m](nmpc_tuning_score.m)**
+**MATLAB — validation in [nmpc_tuning_score.m](NMPC_HW1_GitHub/NMPC_HW1_MATLAB/nmpc_tuning_score.m)**
 
 ```matlab
 score=Inf; parts=nan(1,4);
@@ -1945,520 +1945,3 @@ t_{95}=t_{\left(\lceil0.95n\rceil\right)},\qquad
 f_{\rm late}=\frac1n\sum_{k=1}^n
 \mathbf1[t_k>\Delta t].
 ```
-
-The timing score is:
-
-```math
-F_{\rm time}=0.2\left[
-\left(\frac{\bar t}{\Delta t}\right)^2+
-\max\left(0,\frac{t_{95}}{\Delta t}-1\right)^2+
-\max\left(0,\frac{t_{\rm max}}{\Delta t}-1\right)^2+
-f_{\rm late}
-\right].
-```
-
-**MATLAB**
-
-```matlab
-times=sort(r.log.time(:));
-p95=times(max(1,ceil(0.95*numel(times))));
-timing=opt.timeWeight*((mean(times)/r.cfg.dt)^2 + ...
-    max(0,p95/r.cfg.dt-1)^2 + max(0,max(times)/r.cfg.dt-1)^2 + ...
-    mean(times>r.cfg.dt));
-```
-
-This is an empirical soft cost, affected by hardware and system load. It does not enforce a hard real-time deadline.
-
-### 30.5 Penalize unsuccessful solves and fallback
-
-```math
-f_{\rm nc}=\frac1n\sum_k\mathbf1[{\rm status}_k=2],
-\qquad
-f_{\rm fb}=\frac1n\sum_k\mathbf1[{\rm status}_k=3],
-```
-
-```math
-F_{\rm solver}=0.02f_{\rm nc}+10f_{\rm fb}.
-```
-
-**MATLAB**
-
-```matlab
-statuses=r.log.status(:);
-solver=opt.nonconvergenceWeight*mean(statuses==2)+10*mean(statuses==3);
-```
-
-### 30.6 Assemble the scenario score
-
-```math
-F=F_{\rm tracking}+F_{\rm commands}+F_{\rm time}+F_{\rm solver}.
-```
-
-**MATLAB**
-
-```matlab
-parts=[tracking,commands,timing,solver];
-score=sum(parts);
-```
-
-Complete implementations: [nmpc_tuning_score.m](nmpc_tuning_score.m) and [nmpc_tuning_options.m](nmpc_tuning_options.m). The outer score automates repeated evaluation once its preferences and search bounds have been chosen; it does not eliminate the need to define what performance matters.
-
-<a id="step-31"></a>
-## Step 31 — Explore candidates and refine the best setting
-
-### 31.1 Fix the budget and random seed
-
-The standard search evaluates 18 candidates, each in three 30-second scenarios:
-
-```math
-B=18,\quad T_{\rm train}=30\ {\rm s},\quad
-n_{\rm explore}=\min(B,\max(3,\lceil0.65B\rceil))=12.
-```
-
-**MATLAB**
-
-```matlab
-opt.seed=42;
-opt.maxEvaluations=18;
-opt.trainDuration=30;
-opt.validationDuration=100;
-% In auto_tune_nmpc:
-oldRng=rng; cleanup=onCleanup(@()rng(oldRng));
-rng(opt.seed);
-nExplore=min(opt.maxEvaluations,max(3,ceil(0.65*opt.maxEvaluations)));
-```
-
-The first candidate is the baseline. Other initial candidates cycle through available horizons and use randomized strata for the four continuous coordinates.
-
-### 31.2 Generate stratified continuous samples
-
-For `M=nExplore-1`, a random permutation `pi` of `1,...,M` and independent uniform samples `u_i` give:
-
-```math
-\xi_i=2\frac{\pi_i-u_i}{M}-1,\qquad u_i\sim{\cal U}(0,1).
-```
-
-**MATLAB — exploration in [auto_tune_nmpc.m](auto_tune_nmpc.m)**
-
-```matlab
-initial=zeros(nExplore,5); initial(1,:)=[base.Np,0,0,0,0];
-others=opt.NpValues(opt.NpValues~=base.Np);
-order=[others,base.Np];
-for i=2:nExplore, initial(i,1)=order(1+mod(i-2,numel(order))); end
-for d=2:5
-    initial(2:end,d)=2*((randperm(nExplore-1).'-rand(nExplore-1,1))/(nExplore-1))-1;
-end
-```
-
-This is a Latin-hypercube-like sampling scheme constructed without a toolbox.
-
-### 31.3 Refine around the current best point
-
-For local trial number `ell`:
-
-```math
-r_\ell=\frac{0.45}{\sqrt{\ell}},\qquad
-\xi^{\rm trial}=\Pi_{[-1,1]^4}
-\left(\xi^{\rm best}+r_\ell\eta_\ell\right),
-\quad \eta_\ell\sim{\cal N}(0,I_4).
-```
-
-The horizon moves to the same or an adjacent entry in the discrete horizon list:
-
-**MATLAB**
-
-```matlab
-theta=bestTheta;
-radius=0.45/sqrt(trial-nExplore);
-theta(2:5)=min(1,max(-1,bestTheta(2:5)+radius*randn(1,4)));
-[~,idx]=min(abs(opt.NpValues-bestTheta(1)));
-idx=min(numel(opt.NpValues),max(1,idx+randi(3)-2));
-theta(1)=opt.NpValues(idx);
-```
-
-The method combines stratified exploration with bounded local random refinement. It is not Bayesian optimization and does not establish global optimality.
-
-<a id="step-32"></a>
-## Step 32 — Score each candidate across training scenarios
-
-Each candidate is evaluated in these three scenarios:
-
-| Scenario | Reference amplitude `alpha` | Actual mass factor | Duration |
-|---|---:|---:|---:|
-| Nominal mild | 0.3 | 1.00 | 30 s |
-| Nominal challenging | 1.0 | 1.00 | 30 s |
-| Mass +10% | 0.3 | 1.10 | 30 s |
-
-The training objective is the arithmetic mean:
-
-```math
-F_{\rm train}(\theta)=\frac13\sum_{s=1}^3F_s(\theta).
-```
-
-**MATLAB — candidate evaluation**
-
-```matlab
-candidate=nmpc_tuning_decode(theta,base,opt);
-caseScore=inf(1,3);
-for j=1:3
-    c=scenario(candidate,j,opt.trainDuration);
-    r=simulate_nmpc(c);
-    caseScore(j)=nmpc_tuning_score(r,opt);
-end
-score=mean(caseScore);
-if score<bestScore
-    bestScore=score; bestTheta=theta; bestTrial=trial;
-end
-```
-
-The `scenario` helper is a local function inside `auto_tune_nmpc.m`. One invalid case gives an infinite mean score. A one-second warm-up simulation precedes the search to reduce first-call timing effects.
-
-The script writes `search_history.csv` and `checkpoint.mat` after each trial. The checkpoint preserves progress for inspection; automatic resumption of an interrupted search is not implemented.
-
-### 32.1 Report the supplied search history
-
-| Trial | `Np` | Mean training score |
-|---:|---:|---:|
-| 1 | 20 | 2.8310 |
-| 2 | 10 | 171.43 |
-| 3 | 15 | 4.7054 |
-| 4 | 25 | 3.2476 |
-| 5 | 30 | 5.9517 |
-| 6 | 20 | 2.3322 |
-| 7 | 10 | 4.4240 |
-| 8 | 15 | 21.156 |
-| 9 | 25 | 22.669 |
-| 10 | 30 | 2.3896 |
-| 11 | 20 | 6.6122 |
-| 12 | 10 | 2.1942 |
-| 13 | 15 | 2.6597 |
-| 14 | 10 | 2.2278 |
-| 15 | 10 | 2.1154 |
-| **16** | **15** | **2.1086** |
-| 17 | 20 | 2.1885 |
-| 18 | 10 | 2.1174 |
-
-The winning reported trial had mild, challenging, and mass-case scores of 1.9036, 1.9405, and 2.4817. Its reported trial elapsed time, 7.7425 seconds, covers the candidate's evaluations; it is not the solution time of one NMPC step.
-
-Training score decreased from 2.8310 to 2.1086, approximately 25.5%. These 30-second training scores should not be directly compared with 100-second validation scores because their averaging intervals and transient contributions differ.
-
-**MATLAB — inspect the selected training row**
-
-```matlab
-report.history(report.bestTrainingTrial,:)
-```
-
-<a id="step-33"></a>
-## Step 33 — Validate the candidate and apply an acceptance gate
-
-The selected candidate and baseline are simulated for 100 seconds in four scenarios:
-
-| Scenario | `alpha` | Actual mass factor |
-|---|---:|---:|
-| Nominal mild | 0.3 | 1.00 |
-| Nominal challenging | 1.0 | 1.00 |
-| Mass +10% | 0.3 | 1.10 |
-| Intermediate path, mass +5% | 0.6 | 1.05 |
-
-The fourth scenario is absent from training. The longer interval also includes later reference segments that are absent from the 30-second search interval.
-
-Define:
-
-```math
-\bar F_b=\frac14\sum_{s=1}^4F_{b,s},\qquad
-\bar F_c=\frac14\sum_{s=1}^4F_{c,s}.
-```
-
-Accept the candidate only when the selected trial differs from the baseline trial and:
-
-```math
-\bar F_c<\bar F_b,\qquad \bar F_c<+\infty.
-```
-
-**MATLAB — acceptance in [auto_tune_nmpc.m](auto_tune_nmpc.m)**
-
-```matlab
-accepted=bestTrial~=1 && isfinite(mean(candidateScores)) && mean(candidateScores)<mean(baselineScores);
-bestCfg=base;
-if accepted, bestCfg=candidateCfg; end
-```
-
-Baseline and candidate execution order alternates between scenarios to reduce a simple order effect in timing. If the baseline itself remains the best training trial, it is not rerun as a duplicate candidate and accepted solely because of timing noise.
-
-These scenarios are used for acceptance, and three overlap with the training scenario definitions. They are therefore a validation/selection check, not an unbiased final statistical test set.
-
-**MATLAB — inspect acceptance and paired outputs**
-
-```matlab
-report.comparison
-report.accepted
-```
-
-<a id="step-34"></a>
-## Step 34 — Present the selected parameters and paired results
-
-### 34.1 Selected configuration
-
-The supplied run accepted Trial 16:
-
-```math
-N_p=15,\qquad T_h=15(0.1)=1.5\ {\rm s}.
-```
-
-The reported scale factors were:
-
-```math
-\gamma_v=0.25257,\quad
-\gamma_R=0.51118,\quad
-\gamma_{S_T}=0.41892,\quad
-\gamma_{S_\delta}=0.61758.
-```
-
-Multiplying the baseline weights gives the reported rounded matrices:
-
-```math
-Q=\mathrm{diag}(2,2,0.7577),\qquad
-P=\mathrm{diag}(8,8,1.5154),
-```
-
-```math
-R=\mathrm{diag}(0.1022,0.1534),\qquad
-S=\mathrm{diag}(0.1257,1.8527).
-```
-
-**MATLAB — approximate reconstruction from the displayed rounded matrices**
-
-```matlab
-approxCfg = nmpc_config();
-approxCfg.Np = 15;
-approxCfg.Q = diag([2 2 0.7577]);
-approxCfg.P = diag([8 8 1.5154]);
-approxCfg.R = diag([0.1022 0.1534]);
-approxCfg.S = diag([0.1257 1.8527]);
-% This reconstructs rounded displayed values only.
-% Use saved bestCfg from tuning_result.mat for the original full precision.
-```
-
-The original exact `bestCfg` MAT file was not supplied with the numerical output. Both the scale factors and matrix entries shown here are rounded. Extra precision is not inferred.
-
-| Quantity | Baseline | Selected, reported |
-|---|---|---|
-| `Np` | 20 | 15 |
-| Horizon (s) | 2.0 | 1.5 |
-| `diag(Q)` | `[2 2 3]` | `[2 2 0.7577]` |
-| `diag(P)` | `[8 8 6]` | `[8 8 1.5154]` |
-| `diag(R)` | `[0.2 0.3]` | `[0.1022 0.1534]` |
-| `diag(S)` | `[0.3 3]` | `[0.1257 1.8527]` |
-
-The speed multiplier is close to the search lower bound of 0.25. This observation leaves room for further investigation; it does not establish that the search has reached a global optimum. A lower speed weight does not necessarily increase observed speed error because horizon, command costs, constraints, actuator delay, and all weights act together.
-
-### 34.2 Compare post-transient tracking
-
-**All RMSE values in the next table use the after-5-second window.**
-
-| Scenario | Baseline position RMSE (mm) | Candidate position RMSE (mm) | Position reduction | Baseline speed RMSE (m/s) | Candidate speed RMSE (m/s) |
-|---|---:|---:|---:|---:|---:|
-| Nominal mild | 1.7009 | 0.36624 | 78.5% | 0.0012014 | 4.1148e-5 |
-| Nominal challenging | 2.2254 | 1.2166 | 45.3% | 0.0012044 | 8.6063e-5 |
-| Mass +10% | 5.7097 | 3.4944 | 38.8% | 0.0009201 | 1.2421e-5 |
-| Intermediate path, mass +5% | 3.1298 | 1.8875 | 39.7% | 0.0010643 | 3.5954e-5 |
-
-### 34.3 Compare the score and full-run mean solution time
-
-**The mean solution times below cover the full 100-second run.** They belong to the paired validation run, so they need not equal the timings from the earlier separate baseline experiments.
-
-| Scenario | Baseline score | Candidate score | Baseline mean solve (ms) | Candidate mean solve (ms) |
-|---|---:|---:|---:|---:|
-| Nominal mild | 0.74834 | 0.57821 | 18.143 | 9.3212 |
-| Nominal challenging | 0.83494 | 0.63552 | 19.167 | 9.4842 |
-| Mass +10% | 1.9390 | 1.0909 | 20.473 | 9.8817 |
-| Intermediate path, mass +5% | 1.0252 | 0.72967 | 20.407 | 10.074 |
-
-The mean validation score changed from 1.13687 to 0.758575:
-
-```math
-\text{score reduction}
-=100\frac{1.13687-0.758575}{1.13687}
-\approx33.3\%.
-```
-
-For any reported metric, percentage reduction is:
-
-```math
-\text{reduction}(\%)=100\frac{\text{baseline}-\text{candidate}}{\text{baseline}}.
-```
-
-**MATLAB — calculate reductions from the paired table**
-
-```matlab
-T = report.comparison;
-positionReductionPct = 100*(T.BaselinePositionRMSE_m- ...
-    T.CandidatePositionRMSE_m)./T.BaselinePositionRMSE_m;
-meanTimeReductionPct = 100*(T.BaselineMeanSolve_s- ...
-    T.CandidateMeanSolve_s)./T.BaselineMeanSolve_s;
-scoreReductionPct = 100*(mean(T.BaselineScore)- ...
-    mean(T.CandidateScore))/mean(T.BaselineScore);
-```
-
-![Reported paired comparison of tracking and mean solution time](assets/tuning_comparison.png)
-
-This chart was generated from the supplied comparison numbers without running another simulation. The transcribed data are in [paired_validation_reported.csv](reported_results/paired_validation_reported.csv).
-
-Position RMSE, speed RMSE, and mean solution time improved in all four reported scenarios. The supplied paired table does not show individual effort, variation, maximum-time, or status-count columns, so it does not establish improvement in every individual criterion or completion of every candidate solve within 0.1 seconds.
-
-The horizon and weights changed jointly. The improvement cannot be attributed exclusively to the shorter horizon.
-
-<a id="step-35"></a>
-## Step 35 — Reproduce the workflow and reuse saved settings
-
-### 35.1 Run from the repository root in MATLAB
-
-**MATLAB**
-
-```matlab
-run_self_tests
-run_tuning_tests
-demo_open_loop
-results = run_nmpc_hw1('quick');
-```
-
-The core controller and tuner use base MATLAB operations. The optional solver path requires Optimization Toolbox:
-
-**MATLAB**
-
-```matlab
-results_sqp = run_nmpc_hw1('quick',struct('solver','fmincon'));
-```
-
-### 35.2 Exercise the tuner before the standard search
-
-The quick tuner uses 3 candidates, 12-second training runs, and 15-second validation runs. It checks the workflow but does not replace the standard search.
-
-**MATLAB**
-
-```matlab
-[quickCfg,quickReport] = auto_tune_nmpc('quick');
-[bestCfg,report] = auto_tune_nmpc('standard');
-results_tuned = run_nmpc_hw1('baseline',bestCfg);
-```
-
-For a modified search budget, keep the scoring preferences fixed when making comparative claims:
-
-**MATLAB**
-
-```matlab
-options = struct('maxEvaluations',30);
-[bestCfg,report] = auto_tune_nmpc('standard',options);
-```
-
-### 35.3 Load the exact saved configuration without repeating the search
-
-**MATLAB — when `report` is still in the workspace**
-
-```matlab
-saved = load(fullfile(report.folder,'tuning_result.mat'),'bestCfg');
-results_tuned = run_nmpc_hw1('baseline',saved.bestCfg);
-```
-
-If `report` is absent, open the saved `tuning_result.mat` file in MATLAB or select its actual path before loading it.
-
-### 35.4 Plot a saved validation trajectory without simulating again
-
-**MATLAB**
-
-```matlab
-saved = load(fullfile(report.folder,'validation_1.mat'),'rc');
-r = saved.rc;
-r.cfg.showFigures = true;
-plot_results(r,report.folder);
-```
-
-The seed fixes random sampling, but timing contributes to the outer score. Different hardware or background load can affect the winning candidate, even with the same seed. The original MATLAB release and hardware specifications were not included in the supplied output. New runs record the MATLAB version in `run_notes.txt`.
-
-<a id="step-36"></a>
-## Step 36 — Locate the source code and generated outputs
-
-### 36.1 Source file map
-
-| File | Responsibility |
-|---|---|
-| [nmpc_config.m](nmpc_config.m) | Physical parameters, weights, bounds, and solver settings |
-| [vehicle_step.m](vehicle_step.m) | Discrete dynamics and analytical Jacobians |
-| [equilibrium_torque.m](equilibrium_torque.m) | Steady-speed torque |
-| [demo_open_loop.m](demo_open_loop.m) | Open-loop model demonstration |
-| [practice_yaw_rate.m](practice_yaw_rate.m) | Explicit practice yaw-rate profile |
-| [make_reference.m](make_reference.m) | Reference integration, padding, and optional CSV import |
-| [nmpc_objective.m](nmpc_objective.m) | Single-shooting objective and adjoint gradient |
-| [box_bfgs.m](box_bfgs.m) | Projected dense inverse-BFGS optimizer |
-| [choose_command.m](choose_command.m) | Candidate acceptance and warm-start fallback |
-| [simulate_nmpc.m](simulate_nmpc.m) | Receding-horizon simulation and logging |
-| [compute_metrics.m](compute_metrics.m) | Tracking, command, timing, and status statistics |
-| [plot_results.m](plot_results.m) | Static tracking, input, and solver plots |
-| [export_results.m](export_results.m) | CSV exports and execution notes |
-| [run_nmpc_hw1.m](run_nmpc_hw1.m) | Scenario entry point |
-| [auto_tune_nmpc.m](auto_tune_nmpc.m) | Offline search, validation, and acceptance |
-| [nmpc_tuning_options.m](nmpc_tuning_options.m) | Fixed outer objective and search limits |
-| [nmpc_tuning_decode.m](nmpc_tuning_decode.m) | Candidate-to-configuration mapping |
-| [nmpc_tuning_score.m](nmpc_tuning_score.m) | Fixed closed-loop performance score |
-| [run_self_tests.m](run_self_tests.m) | Model, indexing, gradient, solver, and metric checks |
-| [run_tuning_tests.m](run_tuning_tests.m) | Decoder and outer-score helper checks |
-
-### 36.2 Outputs from new executions
-
-| File | Contents |
-|---|---|
-| `result.mat` | Configuration, reference, states, commands, logs, and metrics |
-| `states.csv` | Actual and reference states |
-| `commands.csv` | Physical and normalized commands |
-| `solver_log.csv` | Solve time, costs, status, optimality, and stop reason |
-| `run_notes.txt` | MATLAB release, timing definition, and termination reason |
-| `tracking.png`, `inputs.png`, `solver.png` | Static execution plots |
-| `summary.csv` | Scenario summary from a controller run |
-| `search_history.csv` | All outer-search candidate results |
-| `checkpoint.mat` | Search state saved after each candidate |
-| `validation_comparison.csv` | Paired baseline/candidate validation summary |
-| `validation_1.mat` through `validation_4.mat` | Baseline `rb` and candidate `rc` trajectories |
-| `tuning_result.mat` | Exact `bestCfg` and `report` from that tuning execution |
-
-Execution directories are created under `results` with timestamps. The original assignment PDF and original execution MAT files are not redistributed in this repository.
-
-### 36.3 Included reported-data summaries
-
-The following files transcribe the supplied outputs. They do not substitute for raw state histories or original MAT files:
-
-- [baseline_runs_reported.csv](reported_results/baseline_runs_reported.csv)
-- [step_tolerance_reported.csv](reported_results/step_tolerance_reported.csv)
-- [paired_validation_reported.csv](reported_results/paired_validation_reported.csv)
-- [selected_parameters_rounded.json](reported_results/selected_parameters_rounded.json)
-
-<a id="step-37"></a>
-## Step 37 — State verification scope, limitations, and references
-
-### 37.1 Verification and data provenance
-
-The numerical results in Steps 28 and 32–34 were transcribed from supplied MATLAB outputs. The plots document those experiments, except the comparison chart, which was drawn from the reported paired table.
-
-MATLAB and Octave were unavailable in the report-authoring environment. No new native MATLAB run is claimed. The independent NumPy verification in [validation/independent_check.py](validation/independent_check.py) checks the original model, objective, analytical derivatives, and projected optimizer; it does not execute MATLAB graphics, table export, optional `fmincon` dispatch, or the complete outer-tuning workflow.
-
-The supplied MATLAB tests should be run locally. Their coverage includes equilibrium, reference indexing, both Jacobians, the horizon gradient, the `Q+P` terminal convention, actuator delay, unwrapped heading, a constrained quadratic minimum, fallback, radial position metrics, bounded tuning factors, fixed solver settings, score arithmetic, and invalid-run rejection. Detailed provenance is in [TESTING.md](TESTING.md).
-
-### 37.2 Interpretation limits
-
-- The lateral model is kinematic and omits tire-slip dynamics. Millimeter-scale nominal simulation errors do not predict real-vehicle accuracy.
-- The practice path replaces an unavailable reference-generation file. Results for the original path require importing that reference and repeating the experiments.
-- All states are assumed available without sensor noise, and no external disturbance process is added.
-- Several specified mass tests do not prove stability or robustness for every possible model error.
-- No terminal-set, recursive-feasibility, or formal closed-loop stability proof is provided.
-- The custom solver checks approximate first-order stationarity; it does not certify a global minimum.
-- The outer search is limited to a chosen budget and bounds. Its winner is the best observed candidate under the chosen score and acceptance check.
-- Some baseline maximum solution times exceed `dt`. Lower candidate mean time alone does not prove deadline satisfaction at every step.
-- Validation includes overlapping scenarios and is used for selection. Additional unseen paths, disturbances, repeated timing runs, and hardware testing would be needed for broader claims.
-
-### 37.3 References
-
-1. Supplied problem statement: `NMPC_HW1.pdf`, Question 1. Source of the model, cost convention, bounds, and initial conditions. The original reference-generation source was not provided.
-2. Nocedal, J., & Wright, S. J. (2006). *Numerical Optimization*, 2nd edition. Springer. [DOI: 10.1007/978-0-387-40065-5](https://doi.org/10.1007/978-0-387-40065-5). Background for line search and BFGS methods.
-3. MathWorks. [fmincon](https://www.mathworks.com/help/optim/ug/fmincon.html). Documentation for the optional SQP interface and user-supplied objective gradient.
-4. MathWorks. [Tune Weights](https://www.mathworks.com/help/mpc/ug/tuning-weights.html). General MPC weight-tuning background.
-5. GitHub Docs. [Writing mathematical expressions](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/writing-mathematical-expressions). GitHub Markdown mathematical notation.
-
